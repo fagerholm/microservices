@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h1>Welcome to JBoss!</h1>
+
+        <div>
+            <p>You have successfully deployed a Java EE 6 Enterprise
+                Application.</p>
+            <h3>Your application can run on:</h3>
+            <img src="resources/gfx/dualbrand_as7eap.png" />
+        </div>
+
+        <h:form id="reg">
+            <h:panelGrid columns="3" columnClasses="titleCell">
+                <h:outputLabel for="name" value="Name:" />
+                <h:inputText id="name" value="#{newPerson.name}" />
+                <h:message for="name" errorClass="invalid" />
+
+                <h:outputLabel for="email" value="Email:" />
+                <h:inputText id="email" value="#{newPerson.email}" />
+                <h:message for="email" errorClass="invalid" />
+
+                <h:outputLabel for="phoneNumber" value="Phone #:" />
+                <h:inputText id="phoneNumber"
+                    value="#{newPerson.phoneNumber}" />
+                <h:message for="phoneNumber" errorClass="invalid" />
+            </h:panelGrid>
+
+            <p>
+                <h:panelGrid columns="2">
+                    <h:commandButton id="register"
+                        action="#{personController.register}"
+                        value="Register" styleClass="register" />
+                    <h:messages styleClass="messages"
+                        errorClass="invalid" infoClass="valid"
+                        warnClass="warning" globalOnly="true" />
+                </h:panelGrid>
+            </p>
+        </h:form>
+        <h2>Persons</h2>
+        <h:panelGroup rendered="#{empty persons}">
+            <em>No registered persons.</em>
+        </h:panelGroup>
+        <h:dataTable var="_person" value="#{persons}"
+            rendered="#{not empty persons}"
+            styleClass="simpletablestyle">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                #{_person.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{_person.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Email</f:facet>
+                #{_person.email}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Phone #</f:facet>
+                #{_person.phoneNumber}
+            </h:column>
+            <h:column>
+                <f:facet name="header">REST URL</f:facet>
+                <a
+                    href="#{request.contextPath}/api/persons/#{_person.id}">/api/persons/#{_person.id}</a>
+            </h:column>
+            <f:facet name="footer">
+            REST URL for all persons: <a
+                    href="#{request.contextPath}/api/persons">/api/persons</a>
+            </f:facet>
+        </h:dataTable>
+    </ui:define>
+</ui:composition>
